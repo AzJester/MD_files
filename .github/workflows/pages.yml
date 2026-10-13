@@ -1,0 +1,41 @@
+# Publishes the viewer to GitHub Pages. Only index.html and the font licenses
+# are deployed. Notes, templates and assets are never copied to the site.
+name: Publish viewer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - licenses/**
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stage the viewer only
+        run: |
+          mkdir _site
+          cp index.html _site/
+          cp -r licenses _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
