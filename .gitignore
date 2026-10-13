@@ -1,0 +1,15 @@
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor temp and lock files
+*.tmp
+*.swp
+~$*
+.~lock.*
+
+# Exports from the viewer
+markdown-library-*.zip
+markdown-library-backup-*.json
+MD_files-*.zip
